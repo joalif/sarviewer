@@ -43,6 +43,7 @@ elif [ "$graph_generator" == "matplotlib" ];then
 	python3 contextsw.py
 #	python3 netinterface.py
 	python3 sockets.py
+	python3 iowait.py
 else
 	echo "Variable graph_generator must be \"gnuplot\" or \"matplotlib\", please check sarviewer.properties"
 fi
