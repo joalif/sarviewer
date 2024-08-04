@@ -10,7 +10,7 @@ License       :GPLv3
 """
 
 import matplotlib
-matplotlib.use('Agg')
+# matplotlib.use('Agg')
 import matplotlib.pyplot as plt 
 import csv
 from datetime import datetime
@@ -22,7 +22,7 @@ import matplotlib.dates
 
 # Aesthetic parameters
 plt.rcParams.update({'font.size': 8})
-plt.rcParams['lines.linewidth'] = 1.5
+plt.rcParams['lines.linewidth'] = 0.5
 time_format = matplotlib.dates.DateFormatter('%H:%M:%S')
 plt.gca().xaxis.set_major_formatter(time_format)
 plt.gcf().autofmt_xdate()
@@ -47,25 +47,28 @@ def generate_graph():
             a = datetime.strptime((row[0]),'%H:%M:%S')
             x.append((a))
             # The remaining columns contain data
-            t_run_queue.append(row[1])
-            t_total.append(row[2])
-            t_blocked.append(row[6])
+            t_run_queue.append(int(row[1]))
+            t_total.append(int(row[2]))
+            t_blocked.append(int(row[6]))
     
     # Plot lines
-    plt.plot(x,t_run_queue, label='Tasks in run queue', color='g', antialiased=True)
-    plt.plot(x,t_total, label='Total active tasks (processes + threads)', color='r', antialiased=True)
-    plt.plot(x,t_blocked, label='Blocked tasks', color='m', antialiased=True)
+    plt.plot(x,t_run_queue, label='Tasks in run queue', color='g')
+    # plt.plot(x,t_total, label='Total active tasks (processes + threads)', color='r')
+    plt.plot(x,t_blocked, label='Blocked tasks', color='m')
     
     # Graph properties
     plt.xlabel('Time',fontstyle='italic')
     plt.ylabel('Tasks',fontstyle='italic')
     plt.title('Tasks graph')
-    plt.grid(linewidth=0.4, antialiased=True)
+    # plt.grid(linewidth=0.4, antialiased=True)
     plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.15), ncol=2, fancybox=True, shadow=True)
+    # plt.legend(loc=0)
+    plt.tight_layout()
     plt.autoscale(True)
     
     # Graph saved to PNG file
-    plt.savefig('../../graphs/tasks.png', bbox_inches='tight')
+    # plt.savefig('../../graphs/tasks.png', bbox_inches='tight')
+    plt.savefig('../../graphs/tasks.pdf')
     #plt.show()
 
 # ======================

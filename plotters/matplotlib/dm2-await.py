@@ -3,14 +3,14 @@
 Author        :Julio Sanz
 Website       :www.elarraydejota.com
 Email         :juliojosesb@gmail.com
-Description   :Generate sockets graph from sockets.dat file
+Description   :Generate tasks graph from loadaverage.dat file
 Dependencies  :Python 2.x, matplotlib
-Usage         :python sockets.py
+Usage         :python tasks.py
 License       :GPLv3
 """
 
 import matplotlib
-matplotlib.use('Agg')
+# matplotlib.use('Agg')
 import matplotlib.pyplot as plt 
 import csv
 from datetime import datetime
@@ -30,17 +30,16 @@ plt.gcf().autofmt_xdate()
 # Time (column 0)
 x = []
 # Data arrays
-t_tcp = []
-t_tcp_use = []
-t_udp_use = []
-t_tcp_time_wait = []
+aqu_sz = []
+r_await = []
+util = []
 
 # ======================
 # FUNCTIONS
 # ======================
 
 def generate_graph():
-    with open('../../data/sockets.dat', 'r') as csvfile:
+    with open('../../data/dm-2.dat', 'r') as csvfile:
         data_source = csv.reader(csvfile, delimiter=' ', skipinitialspace=True)
         for row in data_source:
             # [0] column is a time column
@@ -48,27 +47,28 @@ def generate_graph():
             a = datetime.strptime((row[0]),'%H:%M:%S')
             x.append((a))
             # The remaining columns contain data
-            t_tcp.append(int((int(row[2]))+(int(row[6]))))
-            t_tcp_use.append(int(row[2]))
-            t_udp_use.append(int(row[3]))
-            t_tcp_time_wait.append(int(row[6]))
+            aqu_sz.append(float(row[7]))
+            r_await.append(float(row[8]))
+            # util.append(float(row[9]))
     
     # Plot lines
-    plt.plot(x,t_tcp, label='Total TCP sockets', color='#ff9933', antialiased=True)
-    plt.plot(x,t_tcp_use, label='TCP sockets in use', color='#66ccff', antialiased=True)
-    plt.plot(x,t_udp_use, label='UDP sockets in use', color='#009933', antialiased=True)
-    plt.plot(x,t_tcp_time_wait, label='TCP sockets in TIME WAIT state', color='#cc3300', antialiased=True)
+    plt.plot(x,aqu_sz, label='Avg queue size', color='g')
+    plt.plot(x,r_await, label='AVG wait', color='r')
+    # plt.plot(x,util, label='Bandwidth util for dev', color='m')
     
     # Graph properties
     plt.xlabel('Time',fontstyle='italic')
-    plt.ylabel('Number of sockets',fontstyle='italic')
-    plt.title('Sockets')
+    # plt.ylabel('Tasks',fontstyle='italic')
+    plt.title('DM-2')
     # plt.grid(linewidth=0.4, antialiased=True)
-    plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.20), ncol=2, fancybox=True, shadow=True)
+    plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.15), ncol=2, fancybox=True, shadow=True)
+    # plt.legend(loc=0)
+    plt.tight_layout()
     plt.autoscale(True)
     
     # Graph saved to PNG file
-    plt.savefig('../../graphs/sockets.pdf', bbox_inches='tight')
+    # plt.savefig('../../graphs/tasks.png', bbox_inches='tight')
+    plt.savefig('../../graphs/dm-2.pdf')
     #plt.show()
 
 # ======================

@@ -22,7 +22,7 @@ import matplotlib.dates
 
 # Aesthetic parameters
 plt.rcParams.update({'font.size': 8})
-plt.rcParams['lines.linewidth'] = 1.5
+plt.rcParams['lines.linewidth'] = 0.5
 time_format = matplotlib.dates.DateFormatter('%H:%M:%S')
 plt.gca().xaxis.set_major_formatter(time_format)
 plt.gcf().autofmt_xdate()
@@ -47,9 +47,9 @@ def generate_graph():
             a = datetime.strptime((row[0]),'%H:%M:%S')
             x.append((a))
             # The remaining columns contain data
-            user_cpu.append(row[2])
-            system_cpu.append(row[4])
-            idle_cpu.append(row[7])
+            user_cpu.append(float(row[2]))
+            system_cpu.append(float(row[4]))
+            idle_cpu.append(float(row[7]))
     
     # Plot lines
     plt.plot(x,user_cpu, label='User %', color='g', antialiased=True)
@@ -60,12 +60,12 @@ def generate_graph():
     plt.xlabel('Time',fontstyle='italic')
     plt.ylabel('CPU %',fontstyle='italic')
     plt.title('CPU usage graph')
-    plt.grid(linewidth=0.4, antialiased=True)
+    # plt.grid(linewidth=0.4, antialiased=True)
     plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.15), ncol=2, fancybox=True, shadow=True)
     plt.autoscale(True)
     
     # Graph saved to PNG file
-    plt.savefig('../../graphs/cpu.png', bbox_inches='tight')
+    plt.savefig('../../graphs/cpu.pdf', bbox_inches='tight')
     #plt.show()
 
 # ======================

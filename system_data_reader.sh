@@ -29,21 +29,24 @@ cd $(dirname $0)
 
 dump_sar_info(){
 	# CPU
-	sar -u -f $sysstat_logdir/$sa_file -s $start_time -e $end_time | grep -v -E "CPU|Average|RESTART|^$" > data/cpu.dat &
+	sar -t -u -f $sysstat_logdir/$sa_file -s $start_time -e $end_time | grep -v -E "CPU|Average|RESTART|^$" > data/cpu.dat &
 	# RAM
-	sar -r -f $sysstat_logdir/$sa_file -s $start_time -e $end_time | grep -v -E "[a-zA-Z]|^$" > data/ram.dat &
+	sar -t -r -f $sysstat_logdir/$sa_file -s $start_time -e $end_time | grep -v -E "[a-zA-Z]|^$" > data/ram.dat &
 	# Swap
-	sar -S -f $sysstat_logdir/$sa_file -s $start_time -e $end_time | grep -v -E "[a-zA-Z]|^$" > data/swap.dat &
+	sar -t -S -f $sysstat_logdir/$sa_file -s $start_time -e $end_time | grep -v -E "[a-zA-Z]|^$" > data/swap.dat &
 	# Load average and tasks
-	sar -q -f $sysstat_logdir/$sa_file -s $start_time -e $end_time | grep -v -E "[a-zA-Z]|^$" > data/loadaverage.dat &
+	sar -t -q -f $sysstat_logdir/$sa_file -s $start_time -e $end_time | grep -v -E "[a-zA-Z]|^$" > data/loadaverage.dat &
 	# IO transfer
-	sar -b -f $sysstat_logdir/$sa_file -s $start_time -e $end_time | grep -v -E "[a-zA-Z]|^$" > data/iotransfer.dat &
+	sar -t -b -f $sysstat_logdir/$sa_file -s $start_time -e $end_time | grep -v -E "[a-zA-Z]|^$" > data/iotransfer.dat &
 	# Process/context switches
-	sar -w -f $sysstat_logdir/$sa_file -s $start_time -e $end_time | grep -v -E "[a-zA-Z]|^$" > data/proc.dat &
+	sar -t -w -f $sysstat_logdir/$sa_file -s $start_time -e $end_time | grep -v -E "[a-zA-Z]|^$" > data/proc.dat &
 	# Network Interface
-	sar -n DEV -f $sysstat_logdir/$sa_file -s $start_time -e $end_time | grep $network_interface | grep -v "Average" > data/netinterface.dat &
+	sar -t -n DEV -f $sysstat_logdir/$sa_file -s $start_time -e $end_time | grep $network_interface | grep -v "Average" > data/netinterface.dat &
 	# Sockets
-	sar -n SOCK -f $sysstat_logdir/$sa_file -s $start_time -e $end_time | grep -v -E "[a-zA-Z]|^$" > data/sockets.dat &
+	sar -t -n SOCK -f $sysstat_logdir/$sa_file -s $start_time -e $end_time | grep -v -E "[a-zA-Z]|^$" > data/sockets.dat &
+	sar -t -d --dev=dm-1 -f $sysstat_logdir/$sa_file -s $start_time -e $end_time | grep -v -E "%|Average|Linux|^$" > data/dm-1.dat &
+	sar -t -d --dev=dm-2 -f $sysstat_logdir/$sa_file -s $start_time -e $end_time | grep -v -E "%|Average|Linux|^$" > data/dm-2.dat &
+	sar -t -d --dev=dm-0 -f $sysstat_logdir/$sa_file -s $start_time -e $end_time | grep -v -E "%|Average|Linux|^$" > data/dm-0.dat &
 
     wait
 }

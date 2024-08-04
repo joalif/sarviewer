@@ -26,20 +26,23 @@ elif [ "$graph_generator" == "gnuplot" ];then
 	gnuplot iotransfer.gplot
 	gnuplot proc.gplot
 	gnuplot contextsw.gplot
-	gnuplot netinterface.gplot
+	#gnuplot netinterface.gplot
 	gnuplot sockets.gplot
 elif [ "$graph_generator" == "matplotlib" ];then
 	cd plotters/matplotlib
-	python loadaverage.py
-	python tasks.py
-	python cpu.py
-	python ram.py
-	python swap.py
-	python iotransfer.py
-	python proc.py
-	python contextsw.py
-	python netinterface.py
-	python sockets.py
+	python3 loadaverage.py
+	python3 tasks.py
+	python3 dm0-await.py
+	python3 dm1-await.py
+	python3 dm2-await.py
+	python3 cpu.py
+	# python3 ram.py
+	# python3 swap.py
+	python3 iotransfer.py
+	# python3 proc.py
+	python3 contextsw.py
+#	python3 netinterface.py
+	python3 sockets.py
 else
 	echo "Variable graph_generator must be \"gnuplot\" or \"matplotlib\", please check sarviewer.properties"
 fi
